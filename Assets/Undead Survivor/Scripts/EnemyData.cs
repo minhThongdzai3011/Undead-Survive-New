@@ -6,15 +6,11 @@ public class EnemyData : ScriptableObject
     public float hp;
     public float damageToPlayer;
     public float moveSpeed;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    
+    public EnemyData(float hp, float damageToPlayer, float moveSpeed)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        this.hp = hp;
+        this.damageToPlayer = damageToPlayer;
+        this.moveSpeed = moveSpeed;
     }
 }

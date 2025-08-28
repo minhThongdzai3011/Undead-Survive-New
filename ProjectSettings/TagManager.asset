@@ -9,6 +9,9 @@ TagManager:
   - Exp1
   - Exp2
   - Exp3
+  - Amount
+  - Monter
+  - Monster
   layers:
   - Default
   - TransparentFX

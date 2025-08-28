@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class RandomExp : MonoBehaviour
 {
@@ -23,6 +24,14 @@ public class RandomExp : MonoBehaviour
     {
         int expCount = Random.Range(0, expPrefab.Length);
         Vector2 vector2 = Random.insideUnitCircle * 15f;
-        Instantiate(expPrefab[expCount], (Vector2)transform.position + vector2, Quaternion.identity);
+        GameObject exp =  Instantiate(expPrefab[expCount], (Vector2)transform.position + vector2, Quaternion.identity);
+        StartCoroutine(WaitOneSecond(exp, 30f));
+    }
+
+    IEnumerator WaitOneSecond(GameObject obj, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        Debug.Log("One second has passed.");
+        Destroy(obj);
     }
 }

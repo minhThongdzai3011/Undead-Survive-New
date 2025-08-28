@@ -1,11 +1,15 @@
+using System.Collections;
 using UnityEngine;
 
 
 public class Enemy : MonoBehaviour
 {
-    public EnemyData enemyData;
+    public int enemyID;
+    private EnemyData enemyData;
     private GameObject player;
     private Player playerScript;
+    public AttackArea attackArea;
+    public Rigidbody2D rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,6 +18,9 @@ public class Enemy : MonoBehaviour
         {
             playerScript = player.GetComponent<Player>();
         }
+        EnemyData _enemy = Resources.Load<EnemyData>($"Enemy{enemyID}");
+        enemyData = new EnemyData(_enemy.hp, _enemy.damageToPlayer, _enemy.moveSpeed);
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -39,8 +46,46 @@ public class Enemy : MonoBehaviour
             if (playerScript != null)
             {
                 playerScript.TakeDamage(enemyData.damageToPlayer);
+            }
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision != null) Debug.Log("Enemy collided with: " + collision.collider.name);
+        if (collision.collider.CompareTag("Player"))
+        {
+            Debug.Log("Enemy hit the player!");
+            if (playerScript != null)
+            {
+                StartCoroutine(WaitOneSecond());
+                playerScript.TakeDamage(enemyData.damageToPlayer);
+
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        
+        if (collision.CompareTag("Amount") && attackArea.hasDamaged == true)
+        {
+            attackArea.hasDamaged = false;
+            attackArea.hasAttacked = false;
+            enemyData.hp -= attackArea.damage;
+            Debug.Log($"Enemy took damage, remaining HP: {enemyData.hp}");
+            if (enemyData.hp <= 0f)
+            {
+                Debug.Log("Enemy is dead!");
                 Destroy(gameObject);
             }
         }
+    }
+
+    IEnumerator WaitOneSecond()
+    {
+        yield return new WaitForSeconds(1f);
+        Debug.Log("One second has passed.");
+        rb.linearVelocity = Vector2.zero;
+
     }
 }
