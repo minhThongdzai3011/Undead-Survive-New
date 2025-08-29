@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 
@@ -10,6 +11,9 @@ public class Enemy : MonoBehaviour
     private Player playerScript;
     public AttackArea attackArea;
     public Rigidbody2D rb;
+    private bool damagedSkill1 = true;
+    public TextMeshProUGUI textKill;
+    public int killCount = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,7 +30,13 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (enemyData.hp <= 0f)
+        {
+            Debug.Log("Enemy is dead!");
+            Destroy(gameObject);
+            killCount++;
+            textKill.text = killCount.ToString();
+        }   
     }
 
     private void FixedUpdate()
@@ -42,7 +52,7 @@ public class Enemy : MonoBehaviour
         if(collision != null) Debug.Log("Enemy collided with: " + collision.name);
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Enemy hit the player!");
+            //Debug.Log("Enemy hit the player!");
             if (playerScript != null)
             {
                 playerScript.TakeDamage(enemyData.damageToPlayer);
@@ -51,7 +61,7 @@ public class Enemy : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision != null) Debug.Log("Enemy collided with: " + collision.collider.name);
+        //if (collision != null) Debug.Log("Enemy collided with: " + collision.collider.name);
         if (collision.collider.CompareTag("Player"))
         {
             Debug.Log("Enemy hit the player!");
@@ -79,6 +89,12 @@ public class Enemy : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        if (collision.CompareTag("Skill1") && damagedSkill1)
+        {
+            damagedSkill1 = false;
+            StartCoroutine(WaitOneSecondSkill1());
+            Debug.Log($"Enemy HP: {enemyData.hp}");
+        }
     }
 
     IEnumerator WaitOneSecond()
@@ -87,5 +103,12 @@ public class Enemy : MonoBehaviour
         Debug.Log("One second has passed.");
         rb.linearVelocity = Vector2.zero;
 
+    }
+    IEnumerator WaitOneSecondSkill1()
+    {
+        yield return new WaitForSeconds(1f);
+        enemyData.hp -= 10;
+        Debug.Log($"Enemy took damage, remaining HP: {enemyData.hp}");
+        damagedSkill1 = true;
     }
 }

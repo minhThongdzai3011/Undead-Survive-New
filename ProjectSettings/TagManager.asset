@@ -12,6 +12,7 @@ TagManager:
   - Amount
   - Monter
   - Monster
+  - Skill1
   layers:
   - Default
   - TransparentFX
