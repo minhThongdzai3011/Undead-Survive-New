@@ -10,9 +10,9 @@ TagManager:
   - Exp2
   - Exp3
   - Amount
-  - Monter
   - Monster
   - Skill1
+  - Coin
   layers:
   - Default
   - TransparentFX

@@ -9,20 +9,28 @@ public class Player : MonoBehaviour
 
     public float playerHP = 100f;
     public PlayerController playerController;
+    public Text levelText;
+    public TextMeshProUGUI playerHealthText;
     private Animator anim;
     public Rigidbody2D rb;
     public Button btnSkill1;
     public Button btnSkill2;
     public Button btnSkill3;
-
+    public GameObject lose;
+    public int levelPlayer = 0;
+    public int expLevel = 100;
+    public int expNow = 0;
     public float moveSpeed = 5f;   
     public float maxSpeed = 10f;
-
+    public int damage = 20;
     public CodeHp codeHp;
     public float maxHealth = 100f;
     public float nowHealth;
     public GameObject skillObj;
     public bool isMoving = false;
+    public bool isLose = false;
+    public int countCoin = 0;
+    public int countEnemy = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -36,7 +44,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+       
         Vector2 movement = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
         if (Input.GetKey(KeyCode.RightArrow))
@@ -90,6 +98,19 @@ public class Player : MonoBehaviour
             BtnSkill3();
         }
 
+        if (expNow >= expLevel)
+        {
+            levelPlayer++;
+            expNow -= expLevel;
+            expLevel += 50;
+            maxHealth += 10f;
+            nowHealth = maxHealth;
+            codeHp.SetHealth(nowHealth, maxHealth);
+            playerHP = maxHealth;
+            damage += 1;
+        }
+        levelText.text = "Level: " + levelPlayer.ToString();
+        playerHealthText.text = playerHP.ToString();
     }
 
     public void TakeDamage(float damage)
@@ -97,10 +118,13 @@ public class Player : MonoBehaviour
         playerHP -= damage;
         nowHealth -= damage;
         codeHp.SetHealth(nowHealth, maxHealth);
-        if (playerHP < 0)
+        if (playerHP <= 0)
         {
             playerHP = 0;
+            playerHealthText.text = playerHP.ToString();
             Destroy(gameObject);
+            lose.gameObject.SetActive(true);
+            isLose = true;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -109,17 +133,25 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Exp1"))
         {
             Destroy(collision.gameObject);
+            expNow += 10;
             Debug.Log("Player hit by Enemy1");
         }
         else if (collision.CompareTag("Exp2"))
         {
             Destroy(collision.gameObject);
+            expNow += 20;
             Debug.Log("Player hit by Enemy2");
         }
         else if (collision.CompareTag("Exp3"))
         {
             Destroy(collision.gameObject);
+            expNow += 30;
             Debug.Log("Player hit by Enemy3");
+        }
+        else if (collision.CompareTag("Coin"))
+        {
+            countCoin+=1;
+            Destroy(collision.gameObject);
         }
     }
 
@@ -136,12 +168,14 @@ public class Player : MonoBehaviour
                 Destroy(collision.gameObject);
             }
         }
-        else
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Box"))
         {
             TextBox.gameObject.SetActive(false);
         }
     }
-
     public void BtnSkill1()
     {
         skillObj.SetActive(true);

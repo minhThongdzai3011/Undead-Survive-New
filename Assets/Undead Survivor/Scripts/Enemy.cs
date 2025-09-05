@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour
     public AttackArea attackArea;
     public Rigidbody2D rb;
     private bool damagedSkill1 = true;
-    public TextMeshProUGUI textKill;
     public int killCount = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,6 +22,7 @@ public class Enemy : MonoBehaviour
             playerScript = player.GetComponent<Player>();
         }
         EnemyData _enemy = Resources.Load<EnemyData>($"Enemy{enemyID}");
+        Debug.Log($"name: {name} ==> {_enemy.hp}");
         enemyData = new EnemyData(_enemy.hp, _enemy.damageToPlayer, _enemy.moveSpeed);
         rb = GetComponent<Rigidbody2D>();
     }
@@ -33,9 +33,9 @@ public class Enemy : MonoBehaviour
         if (enemyData.hp <= 0f)
         {
             Debug.Log("Enemy is dead!");
+            playerScript.countEnemy++;
+            Debug.Log($"playerScript.countEnemy: {playerScript.countEnemy}");
             Destroy(gameObject);
-            killCount++;
-            textKill.text = killCount.ToString();
         }   
     }
 
@@ -81,13 +81,8 @@ public class Enemy : MonoBehaviour
         {
             attackArea.hasDamaged = false;
             attackArea.hasAttacked = false;
-            enemyData.hp -= attackArea.damage;
-            Debug.Log($"Enemy took damage, remaining HP: {enemyData.hp}");
-            if (enemyData.hp <= 0f)
-            {
-                Debug.Log("Enemy is dead!");
-                Destroy(gameObject);
-            }
+            enemyData.hp -= playerScript.damage;
+            Debug.Log($"Enemy took damage, remaining HP: {enemyData.hp} , {gameObject.name}");
         }
         if (collision.CompareTag("Skill1") && damagedSkill1)
         {
@@ -108,7 +103,7 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         enemyData.hp -= 10;
-        Debug.Log($"Enemy took damage, remaining HP: {enemyData.hp}");
+        Debug.Log($"Enemy took damage, remaining HP: {enemyData.hp} , {gameObject.name}");
         damagedSkill1 = true;
     }
 }

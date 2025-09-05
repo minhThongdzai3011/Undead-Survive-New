@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class AttackArea : MonoBehaviour
 {
-    public int damage = 3;
     public bool hasAttacked = false;
     public bool hasDamaged = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

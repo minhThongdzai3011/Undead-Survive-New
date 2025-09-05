@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewEnemyData", menuName = "Enemy/EnemyData")]
+[System.Serializable]
 public class EnemyData : ScriptableObject 
 {
     public float hp;
