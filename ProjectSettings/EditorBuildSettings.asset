@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/Undead Survivor/Demo/Home.unity
     guid: f75bcd0f47457e742875fb2481bda9a3
   - enabled: 1
-    path: Assets/Undead Survivor/Demo/Index.unity
-    guid: 7a052ea4115e98d47b70cb09dae1e9cb
-  - enabled: 1
     path: Assets/Undead Survivor/Demo/Login.unity
     guid: ec00ce1e8d7dff74d88b62234815304c
   - enabled: 1
@@ -23,6 +20,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Undead Survivor/Demo/Map1.unity
     guid: 38e5db794b8649e42b8feb732f733f6c
+  - enabled: 1
+    path: Assets/Undead Survivor/Demo/Shop.unity
+    guid: 8e4cb0421594bdf4ca4eb2aaf6826a88
+  - enabled: 1
+    path: Assets/Undead Survivor/Demo/MainMenu.unity
+    guid: 433e842d2c303bc4f92d586fefded20d
+  - enabled: 1
+    path: Assets/Undead Survivor/Demo/Player.unity
+    guid: 6748fede9d9f1da489e7d8832086685d
+  - enabled: 1
+    path: Assets/Undead Survivor/Demo/Loading.unity
+    guid: fc9c8f7ac9ca2284e975a139ddf37883
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

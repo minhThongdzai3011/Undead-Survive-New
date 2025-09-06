@@ -6,7 +6,7 @@ public class Home : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        LoadingGame.instance.loadingObj.SetActive(false);
     }
 
     // Update is called once per frame
@@ -25,5 +25,11 @@ public class Home : MonoBehaviour
     {
         Debug.Log("Play button clicked");
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void BtnChangePlayer()
+    {
+        Debug.Log("Exit button clicked");
+        SceneManager.LoadScene("Player");
     }
 }
