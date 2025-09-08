@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        StartCoroutine(LoadScene());
     }
 
     // Update is called once per frame
@@ -64,17 +65,47 @@ public class GameManager : MonoBehaviour
     public void BtnHome()
     {
         Debug.Log("Home button clicked");
-        SceneManager.LoadScene("Home");
+        LoadingGame.instance.loadingObj.SetActive(true);
+        StartCoroutine(loadHome());
     }
     public void BtnNext()
     {
-        Debug.Log("Next button clicked");
-        SceneManager.LoadScene("Map1");
+        Debug.Log("Home button clicked");
+        LoadingGame.instance.loadingObj.SetActive(true);
+        StartCoroutine(loadPlayMap1());
     }
     public void BtnPlayAgain()
     {
         Debug.Log("Play Again button clicked");
+        LoadingGame.instance.loadingObj.SetActive(true);
+        StartCoroutine(loadPlayAgain());
+    }
+
+
+
+    IEnumerator LoadScene()
+    {
+        yield return new WaitForSeconds(2f);
+        LoadingGame.instance.loadingObj.SetActive(false);
+    }
+
+    IEnumerator loadHome()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Home");
+    }
+
+    IEnumerator loadPlayMap1()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Map1");
+    }
+
+    IEnumerator loadPlayAgain()
+    {
+        yield return new WaitForSeconds(2f);
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
     }
+
 }

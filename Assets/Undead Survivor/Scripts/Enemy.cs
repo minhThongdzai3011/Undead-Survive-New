@@ -13,9 +13,11 @@ public class Enemy : MonoBehaviour
     public Rigidbody2D rb;
     private bool damagedSkill1 = true;
     public int killCount = 0;
+    private Animator anim;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -35,6 +37,7 @@ public class Enemy : MonoBehaviour
             Debug.Log("Enemy is dead!");
             playerScript.countEnemy++;
             Debug.Log($"playerScript.countEnemy: {playerScript.countEnemy}");
+            StartCoroutine(WaitForAnimation());
             Destroy(gameObject);
         }   
     }
@@ -55,6 +58,7 @@ public class Enemy : MonoBehaviour
             //Debug.Log("Enemy hit the player!");
             if (playerScript != null)
             {
+                Debug.Log($"Enemy hit the player!, {gameObject.name}");
                 playerScript.TakeDamage(enemyData.damageToPlayer);
             }
         }
@@ -82,7 +86,11 @@ public class Enemy : MonoBehaviour
             attackArea.hasDamaged = false;
             attackArea.hasAttacked = false;
             enemyData.hp -= playerScript.damage;
+            anim.SetBool("Hit", true);
+            Debug.Log("Enemy is Hit");
             Debug.Log($"Enemy took damage, remaining HP: {enemyData.hp} , {gameObject.name}");
+            StartCoroutine(WaitOneSecond());
+            anim.SetBool("Hit", false);
         }
         if (collision.CompareTag("Skill1") && damagedSkill1)
         {
@@ -105,5 +113,18 @@ public class Enemy : MonoBehaviour
         enemyData.hp -= 10;
         Debug.Log($"Enemy took damage, remaining HP: {enemyData.hp} , {gameObject.name}");
         damagedSkill1 = true;
+    }
+
+    IEnumerator WaitForAnimation()
+    {
+        anim.SetBool("Dead", true);
+        Debug.Log("Enemy is Dead Animation");
+        yield return new WaitForSeconds(3f);
+    }
+
+    IEnumerator WaitThreeSeconds()
+    {
+        Debug.Log("Enemy is Dead Animation");
+        yield return new WaitForSeconds(3f);
     }
 }

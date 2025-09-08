@@ -71,7 +71,7 @@ public class Login : MonoBehaviour
                 PlayerPrefs.SetString("username_", tempUsername);
                 Debug.Log("Login successful! Welcome, " + savedUsername);
                 LoadingGame.instance.loadingObj.SetActive(true);
-                SceneManager.LoadScene("Home");
+                StartCoroutine(load());
                 return;
             }
             else
@@ -133,6 +133,12 @@ public class Login : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         LoadingGame.instance.loadingObj.SetActive(false);
+    }
+
+    IEnumerator load()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Home");
     }
 
 }
